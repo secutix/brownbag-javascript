@@ -1,0 +1,344 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>Brownbag Javascript : AMD</title>
+
+		<meta name="description" content="A javascript brownbag on AMD">
+		<meta name="author" content="BBA">
+
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<link rel="stylesheet" href="css/reveal.min.css">
+		<link rel="stylesheet" href="css/theme/beige.css" id="theme">
+
+		<!-- For syntax highlighting -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- If the query includes 'print-pdf', use the PDF print sheet -->
+		<script>
+			document.write( '<link rel="stylesheet" href="css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );
+		</script>
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+
+				<section>
+					<h1>AMD</h1>
+					<h3>A Javascript BrownBag Presentation</h3>
+				</section>
+
+				<section>
+					<h3>Case study : a simple payment page</h3>
+					<p>A <a href="../sample.html">sample</a> to illustrate the purpose of AMD</p>
+				</section>
+
+				
+				<section>
+					<section>
+						<h3>Header</h3>
+						<pre><code>
+&lt;!doctype html&gt;
+&lt;html lang=en&gt;
+&lt;meta charset=utf-8&gt;
+&lt;title&gt;MasterCard Payment&lt;/title&gt;
+&lt;script type="text/javascript"&gt;
+... 20 lines ...
+&lt;/script&gt;
+&lt;style type="text/css"&gt;
+... 5 lines ...
+&lt;/style&gt;
+						</code></pre>
+					</section>
+					<section>
+						<h3>Some Javascript for validation</h3>
+						<pre><code>
+// Strips all non-numeric characters from the passed value and returns an integer
+var _formalize = function (cc_no) {
+	// Remove non-numeric characters from cc_no
+	var i, result = ''
+	for (i = 0; i < cc_no.length; i++) {
+		if (cc_no.charAt(i).match(/[0-9]/)) {
+			result = result.concat(cc_no.charAt(i))
+		}
+	}
+	return result
+}
+// Validate a credit card number using the LUHN formula (mod 10).
+var validateCc = function (cc_no) {
+	var digits = ''
+	// Clean the number
+	cc_no = _formalize(cc_no)
+	for (var ndx = 0; ndx < cc_no.length; ++ndx) {
+		digits += (ndx % 2) ? cc_no.charAt(cc_no.length - 1 - ndx) * 2 : cc_no.charAt(cc_no.length - 1 - ndx)
+	}
+	// Add all of the single digits together
+	var sum = 0
+	for (ndx = 0; ndx < digits.length; ++ndx) {
+		sum += parseInt(digits.charAt(ndx), 10)
+	}
+	// Valid card numbers will be transformed into a multiple of 10
+	return (sum % 10) ? false : true
+}
+// validate payment form
+var validateForm = function (event) {
+	event.preventDefault()
+	var ccNumberInput = document.querySelector("[name=cc_number]"),
+		value = ccNumberInput.value
+	if (value.match(/^5[1-5].{14}$/) && validateCc(value)) {
+		ccNumberInput.classList.remove("error")
+		alert("Payed !")
+	} else {
+		ccNumberInput.classList.add("error")
+	}
+}
+						</code></pre>
+					</section>
+					<section>
+						<h3>Some markup</h3>
+						<pre><code>
+&lt;form action="/my/post/url" onsubmit="validateForm(event)"&gt;
+&lt;div&gt;
+&lt;label&gt;Credit Card Holder&lt;input name="cc_holder"&gt;&lt;/label&gt;
+&lt;label&gt;Credit Card Number&lt;input name="cc_number"&gt;&lt;/label&gt;
+&lt;label&gt;CVV&lt;input name="cc_cvv"&gt;&lt;/label&gt;
+&lt;input type="submit" value="Pay now !"&gt;&lt;/div&gt;&lt;/form&gt;
+						</code></pre>
+					</section>
+					<section>
+						<h2>That's it !</h2>
+						<small>No additional markup, a very simple CSS</small>
+					</section>
+				</section>
+
+				<section>
+					<h1>Comments?</h1>
+				</section>
+
+				<section>
+					<h3>Bad Practices</h3>
+					<ul>
+						<li class="fragment">Missing tags (head, body, ...)</li>
+						<li class="fragment">Unclosed tags</li>
+						<li class="fragment">JavaScript inside markup</li>
+						<li class="fragment">JavaScript is not at the end</li>
+						<li class="fragment">Will certainly fail any JSLint validation</li>
+						<li class="fragment">...</li>
+					</ul>
+				</section>
+
+				<section>
+					<h3>Not good, dude!</h3>
+					<img src="images/no.gif"/>
+					<small>Ok, I see, we will refactor this $#% as an exercice, so predictable ...</small>
+				</section>				
+
+				<section>
+					<h2>But... !</h2>
+					<ul>
+						<li class="fragment">Does the job.</li>
+						<li class="fragment">Valid HTML5 document, valid JavaScript</li>
+						<li class="fragment">Efficient in number of request (1).<br/><small>Australia to Europe, ~350 ms RTT.</small></li>
+						<li class="fragment">Size efficient (922 bytes, ~ 300ms).<br/><small>jQuery alone is 30 times bigger.</small></li>
+						<li class="fragment">Small DOM, reduced JavaScript: time to have page ready is nearly 0.</li>
+						<li class="fragment">Short, documented, <strong>maintainable</strong></li>
+						<li class="fragment">Can be tested (Selenium ?)</li>
+					</ul>
+				</section>
+
+				<section>
+					<h2>Keep It Simple & Stupid</h2>
+					<p>This use case does not require any external javascript, only some code cleaning.</p>
+					<p>It could use some helpers for the display, mainly to have better browser support.</p>
+				</section>
+
+				<section>
+					<h2>Refer to best practices.</h2>
+				</section>
+
+				<section>
+					<h3>Increasing functional complexity</h3>
+					<p>When functional complexity increases (multiple views, flow directly in the page, ...), the simple method does not scale.</p>
+					<ul>
+						<li>Code conflict</li>
+						<li>Dependency management</li>
+						<li>Interfaces between several independant pieces of code</li>
+						<li>How to manage resources that could be loaded later on ?</li>
+					</ul>
+				</section>
+
+				<section>
+					<h2>Back to the sample</h2>
+					<p>Let's do as if the functional complexity had increased.</p>
+				</section>
+
+				<section>
+					<h3>Step 1</h3>
+					<h4>Split markup / style /  logic</h4>	
+				</section>
+
+				<section>
+					<h3>Step 2</h3>
+					<h4>Split logic from the view and logic from the business</h4>
+					<p>At some stage, the view will need to call the business logic:</p>
+					<ul>
+						<li>How to define the interface of the business logic?</li>
+						<li>How to specify the dependencies and manage them?</li>
+						<li>How to test the different parts on their own and make sure there code is isolated?</li>
+					</ul>
+				</section>
+
+				<section>
+					<h3>Solutions</h3>
+					<ul>
+						<li>Code your own stuff!</li>
+						<li>Use one of the dependency management framework (yepnope.js for example)</li>
+						<li>Wait for <a href="http://wiki.ecmascript.org/doku.php?id=harmony:modules">ECMAscript 6</a></li>
+						<li>Use an implementation of <strong>Asynchronous Module Definition</strong></li>
+					</ul>
+				</section>
+
+				<section>
+					<h2>Asynchronous Module Definition</h2>
+					<ul>
+						<li>Started as part of CommonJs API specifications, know as the Modules/AsynchronousDefinition specification.</li>
+						<li>CommonJs specified a Module format, requiring some parsing of the module code. Not "eval-ready".</li>
+						<li>AMD is a very similar specification, aimed to be javascript & asynchronous friendly.</li>
+						<li>It also provide "Simplified CommonJS Wrapper" to match CommonJs syntax.</li>
+					</ul>
+				</section>
+
+				<section>
+					<h2>CommonJs</h2>
+					<pre><code>
+// this line needs to be synchronous
+var add = require('math').add;
+exports.increment = function (val) {
+    return add(val, 1);
+};
+					</code></pre>
+					<p>Node.js follows this specification for module definition.</p>
+				</section>
+
+				<section>
+					<h2>Asynchronous Module Definition</h2>
+					<p>Two functions to remember.</p>
+					<pre><code>
+// module id can be ommitted. File path will be used instead
+// dependency id can relative to the current module or absolute
+define("increment", ["math"], function (math) {
+	// this is the factory of the module
+	// it can return an object, or a function
+	return {
+		increment : function (val) {
+			return math.add(val, 1);
+		}
+	};
+});
+
+// starts some code when all dependencies are available
+require(["increment"], function () {
+	// do some stuff
+});
+					</code></pre>					
+				</section>
+
+
+		
+				<section>
+					<h2>Implementations</h2>
+					<ul>
+						<li>require.js (comes with a packaging tool)</li>
+						<li>curl.js (Promises-based design, plugins)</li>
+						<li>backDraftLoad</li>
+						<li>...</li>
+					</ul>
+					<p>They come with different plugins/features.</p>
+				</section>
+
+				<section>
+					<h2>Let's Exercise</h2>
+					<img src="images/training.gif"/>
+				</section>
+
+				<section>
+					<h3>More fun !</h3>
+					<ul>
+						<li>Extract the credit card validation specific part.</li>
+						<li>Load dependencies only on submit.</li>
+						<li>Compress, package, compare metrics with original.</li>
+						<li>Unit test validation</li>
+					</ul>
+				</section>
+
+
+				<section>
+					<h3>Final version</h3>
+					<p>2 times more request, 2 times slower.</p>
+				</section>				
+
+				<section>
+					<h3>References</h3>
+					<ul>
+						<li><a href="http://www.commonjs.org/specs/modules/1.0/">CommonJs Modules</a></li>
+						<li><a href="https://github.com/amdjs/amdjs-api/wiki/AMD">AMD specification</a></li>
+						<li><a href="http://requirejs.org">Require.js</a></li>
+						<li><a href="http://requirejs.org">curl.js</a></li>				
+						<li>
+							<p>Performances:</p>
+							<ul>
+								<li><a href="https://developers.google.com/speed/pagespeed/insights">https://developers.google.com/speed/pagespeed/insights</a></li>
+								<li><a href="http://www.webpagetest.org">http://www.webpagetest.org</a></li>
+							</ul>
+						</li>
+						<li><a href="http://iwdrm.tumblr.com">GIFs : If we don't, remember me.</a></li>
+						<li><a href="lab.hakim.se/reveal-js/">Presentation</li>
+					</ul>
+				</section>
+			</div>
+
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.min.js"></script>
+
+		<script>
+
+			// Full list of configuration options available here:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+
+				theme: "beige", // available themes are in /css/theme
+				transition: "linear",
+
+				// Optional libraries used to extend on reveal.js
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+					{ src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+				]
+			});
+
+		</script>
+
+	</body>
+</html>
