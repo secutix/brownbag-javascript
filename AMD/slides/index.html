@@ -237,10 +237,9 @@ exports.increment = function (val) {
 				<section>
 					<h2>Asynchronous Module Definition</h2>
 					<p>Two functions to remember.</p>
-					<pre><code>
-// module id can be ommitted. File path will be used instead
+					<pre><code>// module id can be ommitted. File path will be used instead
 // dependency id can relative to the current module or absolute
-define("increment", ["math"], function (math) {
+define("mylib/math2", ["math"], function (math) {
 	// this is the factory of the module
 	// it can return an object, or a function
 	return {
@@ -249,12 +248,11 @@ define("increment", ["math"], function (math) {
 		}
 	};
 });
-
 // starts some code when all dependencies are available
-require(["increment"], function () {
+require(["mylib/math2"], function (math2) {
 	// do some stuff
-});
-					</code></pre>					
+	alert(math2.increment(5));
+});</code></pre>					
 				</section>
 
 
