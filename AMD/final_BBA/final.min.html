@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang=en>
+	<head>
+		<meta charset="utf-8"/>
+		<title>MasterCard Payment</title>
+		<style type="text/css">
+			body {text-align:center}
+			div {margin:50px auto; width:200px}
+			label {display:block;width:200px}
+			input {width:200px}
+			.error {background: #f99}
+		</style>
+	</head>
+	<body>
+		<form action="/my/post/url">
+			<div>
+				<h2>MasterCard Payment</h2>
+				<label>Credit Card Holder<input name="cc_holder"/></label>
+				<label>Credit Card Number<input name="cc_number"/></label>
+				<label>CVV<input name="cc_cvv"/></label>
+				<input type="submit" value="Pay now !"/>
+			</div>
+		</form>
+		<script src="final.min.js"></script>
+	</body>
+</html>
