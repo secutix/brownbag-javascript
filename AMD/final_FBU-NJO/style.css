@@ -1,0 +1,54 @@
+body {
+	margin-top: 5em;
+	min-height:601px;
+	text-align:center;
+	background: BlueViolet url('http://24.media.tumblr.com/tumblr_m8k64wnLnq1rx78iqo1_500.gif') no-repeat left top;
+	background-position: 0 5em;
+	font-family: Courier;
+	border-bottom: 10px dotted LawnGreen ;
+	border-top: 10px dotted LawnGreen ;
+}
+div {margin:50px auto; width:200px}
+label {display:block;width:200px}
+input {width:200px}
+.error {background: #f99}
+
+h2 {
+	color: DarkGoldenRod;
+	margin-left: 120px;
+}
+
+#paymentForm {
+	position: absolute;
+	left: 280px;
+}
+
+label {
+	display: inline-block;
+	color: DeepPink  ;
+}
+.field {
+	padding: 0;
+	margin: 0 0 1em 0;
+	width: 100%;
+}
+.field  + .field label {
+	color: Yellow ;
+}
+.field + .field + .field label {
+	color: LawnGreen ;
+	text-decoration: blink;
+}
+
+#name {
+	margin-left: 85px;
+}
+#number {
+	margin-left: 90px;
+}
+#cvv {
+	margin-left: 10px;
+}
+#pay {
+	margin-left: 12px;
+}

@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<title>MasterCard Payment</title>
+		<script data-main="main" src="lib/require.js"></script>
+		<link href="style.css" rel="stylesheet" type="text/css">
+	</head>
+
+	<body>
+		<form id="paymentForm" action="/my/post/url">
+			<div>
+				<h2>MasterCard Payment</h2>
+				<div class="field" id="name">
+					<label>Credit Card Holder</label>
+					<input name="cc_holder" />
+				</div>
+				<div class="field" id="number">
+					<label>Credit Card Number</label>
+					<input name="cc_number" />
+				</div>
+				<div class="field" id="cvv">
+					<label>CVV</label>
+					<input name="cc_cvv" />
+				</div>
+					
+				<input type="submit" value="Pay now !" id="pay" />
+			</div>
+		</form>
+	</body>
+</html>
