@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html ng-app>
+    <head>
+        <title>Simple standalone controller</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        
+        <script src="js/lib/jquery-1.9.1.min.js"></script>
+        <script src="js/lib/angular.js"></script>
+        <script src="js/app/controllers/Standalone.js"></script>
+    </head>
+    <body ng-controller="StandaloneCtrl">
+        <div><h1>Scope message value</h1>
+            {{message}}
+        </div>
+        <div>
+            <h1>Input management</h1>
+            <input type="text" ng-model="inputValue"/> - Current input value : <b>{{inputValue}}</b> - <input type="button" ng-click="showInput()" value="Show controller value"/>
+        </div>
+        <div>
+            <h1>Peoples :</h1>
+            <ul>
+                <li ng-repeat="person in people">{{person.firstname}} ({{person.visa}}) - <input type="button" ng-click="remove(person)" value="Remove"/></li>
+            </ul>
+            <input type="button" ng-click="addPeople()" value="Add someone"/>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html ng-app="BrownbagApp">
+    <head>
+        <title>More complex controller</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        
+        <script src="js/lib/jquery-1.9.1.min.js"></script>
+        <script src="js/lib/angular.js"></script>
+        <script src="js/lib/angular-resource.js"></script>
+        <script src="js/app/MyApp.js"></script>
+        <script src="js/app/controllers/DI.js"></script>
+    </head>
+    <body ng-controller="DICtrl">
+        <div><h1>Tax calculator :</h1>
+            Current value of amount : {{amount}}.
+        </div>
+        <div><h1>Filter money :</h1>
+            <ul>
+                <li>{{amount|money}}</li>
+                <li>{{amount|money:'EUR'}}</li>
+            </ul>
+            Actually, they have implemented the currency filter : {{amount|currency}}
+        </div>
+        
+        <div><h1>Framework list through query : </h1>
+            <ul>
+                <li ng-repeat="framework in frameworks">{{framework.name}} ({{framework.technology}})</li>
+            </ul>
+            (<a href="api/frameworks.json">source</a>)
+        </div> 
+    </body>
+</html>

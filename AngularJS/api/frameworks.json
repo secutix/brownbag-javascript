@@ -1,0 +1,14 @@
+[
+    {
+        "name": "AngularJS",
+        "technology": "JavaScript"
+    },
+    {
+        "name": "Symfony2",
+        "technology": "PHP"
+    },
+    {
+        "name": "Spring",
+        "technology": "Java"
+    }
+]
