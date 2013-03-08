@@ -1,59 +1,24 @@
 <!doctype html>
 <html lang=en>
-<meta charset=utf-8>
-<title>MasterCard Payment</title>
-<script type="text/javascript">
-// Strips all non-numeric characters from the passed value and returns an integer.
-var _formalize = function (cc_no) {
-	// Remove non-numeric characters from cc_no
-	var i, result = ''
-	for (i = 0; i < cc_no.length; i++) {
-		if (cc_no.charAt(i).match(/[0-9]/)) {
-			result = result.concat(cc_no.charAt(i))
-		}
-	}
-	return result
-}
-// Validate a credit card number using the LUHN formula (mod 10).
-var validateCc = function (cc_no) {
-	var digits = ''
-	// Clean the number
-	cc_no = _formalize(cc_no)
-	for (var ndx = 0; ndx < cc_no.length; ++ndx) {
-		digits += (ndx % 2) ? cc_no.charAt(cc_no.length - 1 - ndx) * 2 : cc_no.charAt(cc_no.length - 1 - ndx)
-	}
-	// Add all of the single digits together
-	var sum = 0
-	for (ndx = 0; ndx < digits.length; ++ndx) {
-		sum += parseInt(digits.charAt(ndx), 10)
-	}
-	// Valid card numbers will be transformed into a multiple of 10
-	return (sum % 10) ? false : true
-}
-// validate payment form
-var validateForm = function (event) {
-	event.preventDefault()
-	var ccNumberInput = document.querySelector("[name=cc_number]"),
-		value = ccNumberInput.value
-	if (value.match(/^5[1-5].{14}$/) && validateCc(value)) {
-		ccNumberInput.classList.remove("error")
-		alert("Payed !")
-	} else {
-		ccNumberInput.classList.add("error")
-	}
-}
-</script>
-<style type="text/css">
-	body {text-align:center}
-	div {margin:50px auto; width:200px}
-	label {display:block;width:200px}
-	input {width:200px}
-	.error {background: #f99}
-</style>
-<form action="/my/post/url" onsubmit="validateForm(event)">
+<head>
+	<meta charset=utf-8>
+	<title>MasterCard Payment</title>
+
+	<style type="text/css">
+		body {text-align:center}
+		div {margin:50px auto; width:200px}
+		label {display:block;width:200px}
+		input {width:200px}
+		.error {background: #f99}
+	</style>
+</head>
+
+<form id="cc_form" action="/my/post/url">
 <div>
 <h2>MasterCard Payment</h2>
 <label>Credit Card Holder<input name="cc_holder"></label>
 <label>Credit Card Number<input name="cc_number"></label>
 <label>CVV<input name="cc_cvv"></label>
 <input type="submit" value="Pay now !"></div></form>
+
+<script data-main="main" src="lib/require.js"></script>
